@@ -4,6 +4,7 @@ import type { AppState, Config } from './types';
 import { OFFLINE_SEND, OFFLINE_SCHEDULE_RETRY } from './constants';
 import { completeRetry } from './actions';
 import send from './send';
+import { registerAction } from './offlineActionTracker';
 
 const after = (timeout = 0) =>
   new Promise(resolve => setTimeout(resolve, timeout));
@@ -13,10 +14,16 @@ export const createOfflineMiddleware = (config: Config) => (store: any) => (
 ) => (action: any) => {
   // allow other middleware to do their things
   const result = next(action);
+  let promise;
 
   // find any actions to send, if any
   const state: AppState = store.getState();
   const offlineAction = state.offline.outbox[0];
+
+  // create promise to return on enqueue offline action
+  if (action.meta && action.meta.offline) {
+    promise = registerAction(action.meta.transaction);
+  }
 
   // if the are any actions in the queue that we are not
   // yet processing, send those actions
@@ -38,5 +45,5 @@ export const createOfflineMiddleware = (config: Config) => (store: any) => (
   if (action.type === OFFLINE_SEND && offlineAction && !state.offline.busy) {
     send(offlineAction, store.dispatch, config, state.offline.retryCount);
   }
-  return result;
+  return promise || result;
 };
