@@ -35,13 +35,14 @@ const getResponseBody = (res: any): Promise<{} | string> => {
 // eslint-disable-next-line no-unused-vars
 export default (effect: any, _action: OfflineAction): Promise<any> => {
   const { url, ...options } = effect;
+  const body = JSON.stringify(options.body);
   const headers = { 'content-type': 'application/json', ...options.headers };
-  return fetch(url, { ...options, headers }).then(res => {
+  return fetch(url, { ...options, body, headers }).then(res => {
     if (res.ok) {
       return getResponseBody(res);
     }
-    return getResponseBody(res).then(body => {
-      throw new NetworkError(body || '', res.status);
+    return getResponseBody(res).then(responseBody => {
+      throw new NetworkError(responseBody || '', res.status);
     });
   });
 };
