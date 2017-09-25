@@ -13,6 +13,15 @@ export function NetworkError(response: {} | string, status: number) {
 NetworkError.prototype = Error.prototype;
 NetworkError.prototype.status = null;
 
+const isJSON = (json: string): ?boolean => {
+  try {
+    JSON.parse(json);
+  } catch (e) {
+    return false;
+  }
+  return true;
+};
+
 const tryParseJSON = (json: string): ?{} => {
   if (!json) {
     return null;
@@ -35,7 +44,9 @@ const getResponseBody = (res: any): Promise<{} | string> => {
 // eslint-disable-next-line no-unused-vars
 export default (effect: any, _action: OfflineAction): Promise<any> => {
   const { url, ...options } = effect;
-  const body = JSON.stringify(options.body);
+  const body = isJSON(options.body) // TODO backwards compatibility, deprecate
+    ? options.body
+    : JSON.stringify(options.body);
   const headers = { 'content-type': 'application/json', ...options.headers };
   return fetch(url, { ...options, body, headers }).then(res => {
     if (res.ok) {
