@@ -190,7 +190,7 @@ const ordersReducer = (state, action) {
     case 'COMPLETE_ORDER':
       return {
         ...state,
-        submitting: {...state.submitting, [action.payload.orderId]: true
+        submitting: { ...state.submitting, [action.payload.orderId]: true }
       };
     case 'COMPLETE_ORDER_COMMIT':
       return {
