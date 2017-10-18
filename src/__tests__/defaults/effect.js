@@ -17,6 +17,24 @@ afterAll(() => {
   global.fetch = globalFetch;
 });
 
+test('effector accept JSON stringified object', () => {
+  const body = {
+    email: 'email@example.com',
+    password: 'p4ssw0rd'
+  };
+
+  global.fetch = jest.fn((url, options) => {
+    expect(options.headers['content-type']).toEqual('application/json');
+    expect(JSON.parse(options.body)).toEqual(body);
+
+    return fetch('');
+  });
+
+  return effectReconciler({ body: JSON.stringify(body) }).then(body2 => {
+    expect(body2).toEqual(null);
+  });
+});
+
 test('effector accept objects and send JSON', () => {
   const body = {
     email: 'email@example.com',
