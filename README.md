@@ -220,10 +220,13 @@ The **effects reconciler** is a function that you pass to offline enhancer confi
 type EffectsReconciler = (effect: any, action: OfflineAction) => Promise<any>
 ```
 
-The default reconciler is simply a paper-thin wrapper around [fetch](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) that rejects non-OK HTTP status codes, and assumes the response will be valid JSON.
+The default reconciler is simply a paper-thin wrapper around
+[fetch](https://developer.mozilla.org/en/docs/Web/API/Fetch_API) that rejects
+non-OK HTTP status codes, and assumes both the body and the response will be
+valid JSON objects. It's (simplified) behaviour is something like this:
 ```js
   const effectReconciler = ({url, ...opts}) =>
-    fetch(url, opts).then(res => res.ok
+    fetch(url, {...opts, body: JSON.stringify(opts.body)}).then(res => res.ok
       ? res.json()
       : Promise.reject(res.text().then(msg => new Error(msg)));
 ```
