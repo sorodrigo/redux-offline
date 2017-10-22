@@ -100,7 +100,7 @@ class DetectNetwork {
    * @private
    */
   _addListeners() {
-    NetInfo.addEventListener('change', reach => {
+    NetInfo.addEventListener('connectionChange', reach => {
       this._update(reach);
     });
     AppState.addEventListener('change', this._init);
