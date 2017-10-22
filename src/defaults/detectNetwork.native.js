@@ -74,7 +74,7 @@ class DetectNetwork {
    * @private
    */
   _init = async () => {
-    const reach = await NetInfo.fetch();
+    const reach = await NetInfo.getConnectionInfo();
     this._update(reach);
   };
   /**
