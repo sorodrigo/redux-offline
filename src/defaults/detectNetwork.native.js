@@ -74,7 +74,7 @@ class DetectNetwork {
    * @private
    */
   _init = async () => {
-    const reach = await NetInfo.fetch();
+    const reach = await NetInfo.getConnectionInfo();
     this._update(reach);
   };
   /**
@@ -100,7 +100,7 @@ class DetectNetwork {
    * @private
    */
   _addListeners() {
-    NetInfo.addEventListener('change', reach => {
+    NetInfo.addEventListener('connectionChange', reach => {
       this._update(reach);
     });
     AppState.addEventListener('change', this._init);
