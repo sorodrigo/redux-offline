@@ -1,57 +1,47 @@
-import discard from '../../defaults/discard'
+import discard from '../../defaults/discard';
 
+test("don't discard is there's no error", () => {
+  const result = discard();
 
-test("don't discard is there's no error", function()
-{
-  const result = discard()
+  expect(result).toBeFalsy();
+});
 
-  expect(result).toBeFalsy()
-})
+describe('discard if error', () => {
+  test("don't have a defined status", () => {
+    const result = discard({});
 
-describe("discard if error", function()
-{
-  test("don't have a defined status", function()
-  {
-    const result = discard({})
+    expect(result).toBeTruthy();
+  });
 
-    expect(result).toBeTruthy()
-  })
+  test('status is set to undefined', () => {
+    const result = discard({ status: undefined });
 
-  test("status is set to undefined", function()
-  {
-    const result = discard({status: undefined})
+    expect(result).toBeTruthy();
+  });
 
-    expect(result).toBeTruthy()
-  })
+  test('status is null', () => {
+    const result = discard({ status: null });
 
-  test("status is null", function()
-  {
-    const result = discard({status: null})
+    expect(result).toBeTruthy();
+  });
+});
 
-    expect(result).toBeTruthy()
-  })
-})
+describe('error statuses', () => {
+  test("don't discard if network error has a success status", () => {
+    const result = discard({ status: 200 });
 
-describe('error statuses', function()
-{
-  test("don't discard if network error has a success status", function()
-  {
-    const result = discard({status: 200})
+    expect(result).toBeFalsy();
+  });
 
-    expect(result).toBeFalsy()
-  })
+  test('discard on client error', () => {
+    const result = discard({ status: 404 });
 
-  test("discard on client error", function()
-  {
-    const result = discard({status: 404})
+    expect(result).toBeTruthy();
+  });
 
-    expect(result).toBeTruthy()
-  })
+  test("don't discard on server error", () => {
+    const result = discard({ status: 512 });
 
-  test("don't discard on server error", function()
-  {
-    const result = discard({status: 512})
-
-    expect(result).toBeFalsy()
-  })
-})
+    expect(result).toBeFalsy();
+  });
+});
