@@ -27,6 +27,12 @@ describe('discard if error', () => {
 });
 
 describe('error statuses', () => {
+  test("don't discard if network error is zero (null number)", () => {
+    const result = discard({ status: 0 });
+
+    expect(result).toBeFalsy();
+  });
+
   test("don't discard if network error has a success status", () => {
     const result = discard({ status: 200 });
 
