@@ -1,15 +1,15 @@
 /* eslint no-underscore-dangle: 0 */
-import { AppState, NetInfo } from 'react-native'; // eslint-disable-line
+import { AppState, NetInfo } from 'react-native' // eslint-disable-line
 
 class LegacyDetectNetwork {
   constructor(callback) {
-    this._reach = null;
-    this._isConnected = null;
-    this._isConnectionExpensive = null;
-    this._callback = callback;
+    this._reach = null
+    this._isConnected = null
+    this._isConnectionExpensive = null
+    this._callback = callback
 
-    this._init();
-    this._addListeners();
+    this._init()
+    this._addListeners()
   }
 
   /**
@@ -23,13 +23,13 @@ class LegacyDetectNetwork {
    */
   _hasChanged = reach => {
     if (this._reach !== reach) {
-      return true;
+      return true
     }
     if (this._isConnected !== this._getConnection(reach)) {
-      return true;
+      return true
     }
-    return false;
-  };
+    return false
+  }
   /**
    * Sets the connection reachability prop
    * @param {string} reach - connection reachability.
@@ -40,9 +40,9 @@ class LegacyDetectNetwork {
    * @private
    */
   _setReach = reach => {
-    this._reach = reach;
-    this._isConnected = this._getConnection(reach);
-  };
+    this._reach = reach
+    this._isConnected = this._getConnection(reach)
+  }
   /**
    * Gets the isConnected prop depending on the connection reachability's value
    * @param {string} reach - connection reachability.
@@ -52,7 +52,7 @@ class LegacyDetectNetwork {
    * @returns {void}
    * @private
    */
-  _getConnection = reach => reach !== 'NONE' && reach !== 'UNKNOWN';
+  _getConnection = reach => reach !== 'NONE' && reach !== 'UNKNOWN'
   /**
    * Sets the isConnectionExpensive prop
    * @returns {Promise.<void>} Resolves to true if connection is expensive,
@@ -61,12 +61,12 @@ class LegacyDetectNetwork {
    */
   _setIsConnectionExpensive = async () => {
     try {
-      this._isConnectionExpensive = await NetInfo.isConnectionExpensive();
+      this._isConnectionExpensive = await NetInfo.isConnectionExpensive()
     } catch (err) {
       // err means that isConnectionExpensive is not supported in iOS
-      this._isConnectionExpensive = null;
+      this._isConnectionExpensive = null
     }
-  };
+  }
   /**
    * Fetches and sets the connection reachability and the isConnected props
    * @returns {Promise.<void>} Resolves when the props have been
@@ -74,9 +74,9 @@ class LegacyDetectNetwork {
    * @private
    */
   _init = async () => {
-    const reach = await NetInfo.fetch();
-    this._update(reach);
-  };
+    const reach = await NetInfo.getConnectionInfo()
+    this._update(reach)
+  }
   /**
    * Check changes on props and store and dispatch if neccesary
    * @param {string} reach - connection reachability.
@@ -87,12 +87,12 @@ class LegacyDetectNetwork {
    * @private
    */
   _update = reach => {
-    const normalizedReach = reach.toUpperCase();
+    const normalizedReach = reach.toUpperCase()
     if (this._hasChanged(normalizedReach)) {
-      this._setReach(normalizedReach);
-      this._dispatch();
+      this._setReach(normalizedReach)
+      this._dispatch()
     }
-  };
+  }
 
   /**
    * Adds listeners for when connection reachability and app state changes to update props
@@ -101,9 +101,9 @@ class LegacyDetectNetwork {
    */
   _addListeners() {
     NetInfo.addEventListener('change', reach => {
-      this._update(reach);
-    });
-    AppState.addEventListener('change', this._init);
+      this._update(reach)
+    })
+    AppState.addEventListener('change', this._init)
   }
 
   /**
@@ -113,15 +113,15 @@ class LegacyDetectNetwork {
    * @private
    */
   _dispatch = async () => {
-    await this._setIsConnectionExpensive();
+    await this._setIsConnectionExpensive()
     this._callback({
       online: this._isConnected,
       netInfo: {
         isConnectionExpensive: this._isConnectionExpensive,
         reach: this._reach
       }
-    });
-  };
+    })
+  }
 }
 
-export default LegacyDetectNetwork;
+export default LegacyDetectNetwork
