@@ -8,8 +8,12 @@ export default (
   action: OfflineAction,
   _retries: number = 0 // eslint-disable-line no-unused-vars
 ): boolean => {
+  // no error -> don't discard
+  if (!error) {
+    return false;
+  }
   // not a network error -> discard
-  if (!('status' in error)) {
+  if (error.status == null) {
     return true;
   }
 
