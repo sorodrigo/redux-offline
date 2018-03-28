@@ -31,7 +31,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
+    "babel-eslint": "^8.2.2",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.18.0",
     "babel-preset-latest": "^6.24.1",
@@ -42,17 +42,17 @@
     "eslint-plugin-babel": "^4.1.1",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-prettier": "^2.2.0",
-    "flow-bin": "^0.42.0",
-    "jest": "^19.0.2",
+    "flow-bin": "^0.68.0",
+    "jest": "^22.4.3",
     "prettier": "^1.6.1",
-    "react": "^15.4.2",
+    "react": "^16.2.0",
     "redux": "^3.6.0",
     "redux-devtools-instrument": "^1.8.2",
-    "redux-logger": "^2.8.2",
-    "redux-persist-node-storage": "^1.0.2"
+    "redux-logger": "^3.0.6",
+    "redux-persist-node-storage": "^2.0.0"
   },
   "dependencies": {
-    "redux-persist": "^4.5.0"
+    "redux-persist": "^5.9.1"
   },
   "peerDependencies": {
     "redux": ">=3"
