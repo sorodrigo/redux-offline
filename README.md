@@ -19,6 +19,8 @@ _To get started, take a moment to read through the **[Offline Guide](#offline-gu
 
 ## Contents
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/sorodrigo/redux-offline.svg)](https://greenkeeper.io/)
+
 * [Quick start](#quick-start)
 * [Offline Guide](#offline-guide)
 * [Configuration](#configuration)
